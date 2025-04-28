@@ -41,8 +41,6 @@ class WelcomePage(tk.Frame):
         bo3.place(x=0, y=540)
         bo5 = ttk.Button(self, text="Best of 5", width=20, command=lambda: self.set_rules_and_go("bo5"))
         bo5.place(x=0, y=560)
-        go_to_game = ttk.Button(self, text="Gameplay Screen", width=20, command=self.go_to_gameplay)
-        go_to_game.place(x=0, y=500)
 
     def slide_in_image(self, step=0):
         if step == 0:
@@ -60,16 +58,6 @@ class WelcomePage(tk.Frame):
             self.canvas.coords(self.image_id, 400, new_y)
 
             self.after(15, lambda: self.slide_in_image(step + 1))
-
-
-    def on_button_click(self):
-        self.controller.sound_manager.play_sound("click")
-
-    def go_to_gameplay(self):
-        self.controller.show_frame("GameplayPage")
-
-    def go_to_results(self):
-        self.controller.show_frame("ResultsPage")
 
     def set_rules_and_go(self, ruleset):
         self.controller.sound_manager.play_sound("click")

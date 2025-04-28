@@ -11,6 +11,7 @@ class GameplayPage(tk.Frame):
         self.controller = controller
         self.setup_background()
         self.setup_widgets()
+        self.setup_scoreboard()
 
 
 # Setup Background
@@ -30,7 +31,7 @@ class GameplayPage(tk.Frame):
         self.new_rock_image = self.original_rock_image.resize((100, 100))
         self.rock_image = ImageTk.PhotoImage(self.new_rock_image)
 
-        self.rock_button = tk.Button(self, image=self.rock_image, command=lambda: self.on_button_click("rock"))
+        self.rock_button = tk.Button(self, image=self.rock_image, command=lambda: [self.move_forward(button=self.rock_button), self.on_button_click("rock")])
         self.rock_button.place(x=200, y=450)
 
         self.original_paper_path = os.path.join(BASE_PATH, "assets", "hand-paper.png")
@@ -39,7 +40,7 @@ class GameplayPage(tk.Frame):
         self.new_paper_image = self.original_paper_image.resize((100, 100))
         self.paper_image = ImageTk.PhotoImage(self.new_paper_image)
 
-        self.paper_button = tk.Button(self, image=self.paper_image, command=lambda: self.on_button_click("paper"))
+        self.paper_button = tk.Button(self, image=self.paper_image, command=lambda: [self.move_forward(button=self.paper_button) ,self.on_button_click("paper")])
         self.paper_button.place(x=350, y=450)
 
         self.original_scissors_path = os.path.join(BASE_PATH, "assets", "scissors.png")
@@ -48,9 +49,9 @@ class GameplayPage(tk.Frame):
         self.new_scissors_image = self.original_scissors_image.resize((100, 100))
         self.scissors_image = ImageTk.PhotoImage(self.new_scissors_image)
 
-        self.scissors_button = tk.Button(self, image=self.scissors_image, command=lambda: self.on_button_click("scissors"))
+        self.scissors_button = tk.Button(self, image=self.scissors_image, command=lambda: [self.move_forward(button=self.scissors_button), self.on_button_click("scissors")])
         self.scissors_button.place(x=500, y=450)
-
+    def setup_scoreboard(self):
     # Scoreboard
         self.game_logic = GameLogic()
 
@@ -65,12 +66,17 @@ class GameplayPage(tk.Frame):
         self.tie_score_label.place(x=30, y=200)
 
     def on_button_click(self, player_choice):
+        
         self.controller.sound_manager.play_sound("click")
         computer_choice = random.choice(["rock", "paper", "scissors"])
     
         result = self.game_logic.determine_winner(player_choice, computer_choice)
     
         self.update_scoreboard()
+        
+        if self.game_logic.is_game_over():
+            self.show_game_over()
+
     
     
     def update_scoreboard(self):
@@ -93,4 +99,24 @@ class GameplayPage(tk.Frame):
     def reset_game(self):
         self.game_logic = GameLogic()
         self.update_scoreboard()
+        self.controller.show_frame("WelcomePage")
+
+
+    def move_forward(self, button, step=0):
+        total_steps = 150
+
+        if step <= total_steps:
+            final_y = button.winfo_y() - 1
+            button.place(x=button.winfo_x(), y=final_y)
+
+            self.after(5, lambda: self.move_forward(button=button, step=step + 1))
+
+    def move_back(self, button, step=0):
+            total_steps = 150
+
+            if step <= total_steps:
+                final_y = button.winfo_y() + 1
+                button.place(x=button.winfo_x(), y=final_y)
+
+                self.after(5, lambda: self.move_back(button=button, step=step + 1))
 

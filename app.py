@@ -3,7 +3,6 @@ import os
 from welcome_page import WelcomePage
 from sound_manager import SoundManager
 from gameplay_page import GameplayPage
-from results_page import ResultsPage
 from constants import BASE_PATH, BLUE
 
 class RockPaperScissorsApp(tk.Tk):
@@ -35,7 +34,7 @@ class RockPaperScissorsApp(tk.Tk):
 
         self.frames = {}
 
-        for PageClass in (WelcomePage, GameplayPage, ResultsPage):
+        for PageClass in (WelcomePage, GameplayPage):
             page_name = PageClass.__name__
             frame = PageClass(parent=container, controller=self)
             self.frames[page_name] = frame

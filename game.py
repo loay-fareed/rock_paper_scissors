@@ -1,4 +1,4 @@
-import random
+
 
 class GameLogic:
     def __init__(self):
@@ -29,7 +29,8 @@ class GameLogic:
             return "computer"
 
     def is_game_over(self):
-        return self.player_score == self.wins_required or self.computer_score == self.wins_required
+        if self.player_score == self.wins_required or self.computer_score == self.wins_required:
+            return True
 
     def get_winner(self):
         if self.player_score == self.wins_required:
