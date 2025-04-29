@@ -45,3 +45,6 @@ class RockPaperScissorsApp(tk.Tk):
     def show_frame(self, page_name):
         frame = self.frames[page_name]
         frame.tkraise()
+
+        if hasattr(frame, "refresh"):
+            frame.refresh()
