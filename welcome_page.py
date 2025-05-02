@@ -7,6 +7,7 @@ class WelcomePage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
+        
 
         # Set up background image
         self.setup_background()
@@ -16,8 +17,11 @@ class WelcomePage(tk.Frame):
         self.setup_widgets()
 
 
+
+
     def setup_background(self):
         self.configure(bg=BLUE, width=800, height=600)
+        self.config
 
         self.canvas = tk.Canvas(self, width=800, height=600, bg=BLUE, highlightthickness=0)
         self.canvas.pack(fill="both", expand=True)
@@ -41,6 +45,9 @@ class WelcomePage(tk.Frame):
         bo3.place(x=0, y=540)
         bo5 = ttk.Button(self, text="Best of 5", width=20, command=lambda: self.set_rules_and_go("bo5"))
         bo5.place(x=0, y=560)
+        change_username = ttk.Button(self, text="Change Username", width=20, command= lambda: self.user_name())
+        change_username.place(x=0, y=500)
+
 
     def slide_in_image(self, step=0):
         if step == 0:
@@ -63,3 +70,48 @@ class WelcomePage(tk.Frame):
         self.controller.sound_manager.play_sound("click")
         self.controller.ruleset = ruleset
         self.controller.show_frame("GameplayPage")
+
+    def user_name(self):
+        popup = tk.Toplevel(self)
+        popup.title("Name Entry")
+        
+        pop_width = 300
+        pop_height = 150
+        window_width = self.winfo_screenwidth()
+        window_height = self.winfo_screenheight()
+        x = (window_width / 2) - (pop_width / 2)
+        y = (window_height / 2) - (pop_height / 2)
+        popup.geometry(f'{pop_width}x{pop_height}+{int(x)}+{int(y)}')
+        
+        popup.configure(bg=BLUE)
+
+        self.player_name_var = tk.StringVar()
+        entry = tk.Entry(popup, width=20, textvariable=self.player_name_var)
+        entry.place(x=90, y=50)
+        entry.focus_set()
+
+        def on_submit():
+            name = self.player_name_var.get().strip()
+            if name:
+                self.controller.player_name = name
+            popup.destroy()
+
+        confirm_button = tk.Button(popup, text="Submit", font=("Helvetica", 12, "bold"), command=on_submit)
+
+        confirm_button.place(x=120, y=90)
+        name = self.player_name_var.get()
+        self.controller.player_name = name
+        
+        popup.bind("<Return>", lambda event: on_submit())
+
+        popup.transient(self)
+        popup.grab_set()
+
+        
+
+
+
+
+
+
+

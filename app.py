@@ -10,10 +10,17 @@ class RockPaperScissorsApp(tk.Tk):
         super().__init__()
 
         self.ruleset = "bo1"
+        self.player_name = "Player"
 
         # Window Setup
         self.title("Rock, Paper, Scissors")
-        self.geometry('800x600')
+        app_width = 800
+        app_height = 600
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = (screen_width / 2) - (app_width / 2)
+        y = (screen_height / 2) - (app_height / 2)
+        self.geometry(f'{app_width}x{app_height}+{int(x)}+{int(y)}')
         self.resizable(width=False, height=False)
         self.configure(bg=BLUE)
 
